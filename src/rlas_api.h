@@ -7,11 +7,11 @@
 namespace rlas
 {
 
-using app_log_type = TraceLogLevel;
+using app_log_level = TraceLogLevel;
 
 struct app_params
 {
-    app_log_type log_level = LOG_NONE;
+    app_log_level log_level = LOG_NONE;
     int target_fps = 60;
 };
 
