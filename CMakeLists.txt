@@ -38,6 +38,8 @@ target_include_directories(angelscript PUBLIC
 
 add_executable(rlas
     src/main.cpp
+    src/rlas_api.h
+    src/rlas_api.cpp
 )
 
 target_link_libraries(rlas PRIVATE raylib angelscript)

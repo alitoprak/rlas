@@ -1,9 +1,11 @@
-void setup(int &out window_width, int &out window_height, string &out window_title, int &out target_fps)
+void setup(app_params &out app, window_params &out window)
 {
-    window_width = 512;
-    window_height = 512;
-    window_title = "hello world";
-    target_fps = 60;
+    app.log_level = app_log_level::none;
+    app.target_fps = 60;
+
+    window.width = 512;
+    window.height = 512;
+    window.title = "hello world";
 }
 
 void frame()
