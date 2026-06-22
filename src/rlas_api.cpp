@@ -6,19 +6,32 @@
 namespace rlas
 {
 
-void window_params_construct(window_params* mem)
+void window_params_construct(window_params* self)
 {
-    new(mem) window_params();
+    new(self) window_params();
 }
 
-void window_params_destruct(window_params* mem)
+void window_params_destruct(window_params* self)
 {
-    mem->~window_params();
+    self->~window_params();
 }
 
-void rl_clear_background(uint8_t r, uint8_t g, uint8_t b)
+static void color_construct(uint8_t r, uint8_t g, uint8_t b, uint8_t a, color* self)
 {
-    ClearBackground({ r, g, b, 255 });
+    self->r = r;
+    self->g = g;
+    self->b = b;
+    self->a = a;
+}
+
+void rl_clear_background(const color& color)
+{
+    ClearBackground(color);
+}
+
+void rl_draw_text(const std::string& text, int pos_x, int pos_y, int font_size, const color& color)
+{
+    DrawText(text.c_str(), pos_x, pos_y, font_size, color);
 }
 
 void register_api(asIScriptEngine* script_engine)
@@ -46,7 +59,11 @@ void register_api(asIScriptEngine* script_engine)
     script_engine->RegisterObjectProperty("window_params", "int height", asOFFSET(window_params, height));
     script_engine->RegisterObjectProperty("window_params", "string title", asOFFSET(window_params, title));
 
-    script_engine->RegisterGlobalFunction("void clear_background(uint8, uint8, uint8)", asFUNCTION(rl_clear_background), asCALL_CDECL);
+    script_engine->RegisterObjectType("color", sizeof(color), asOBJ_VALUE | asOBJ_POD);
+    script_engine->RegisterObjectBehaviour("color", asBEHAVE_CONSTRUCT, "void f(uint8, uint8, uint8, uint8)", asFUNCTION(color_construct), asCALL_CDECL_OBJLAST);
+
+    script_engine->RegisterGlobalFunction("void clear_background(const color &in)", asFUNCTION(rl_clear_background), asCALL_CDECL);
+    script_engine->RegisterGlobalFunction("void draw_text(const string &in, int, int, int, const color &in)", asFUNCTION(rl_draw_text), asCALL_CDECL);
 }
 
 };

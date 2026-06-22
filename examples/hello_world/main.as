@@ -9,6 +9,8 @@ void setup(app_params &out app, window_params &out window)
 }
 
 float timer = 0;
+color black_color(0, 0, 0, 255);
+color white_color(255, 255, 255, 255);
 
 void frame(float delta_time)
 {
@@ -16,11 +18,13 @@ void frame(float delta_time)
 
     if (timer <= 1)
     {
-        clear_background(0, 0, 0);
+        clear_background(black_color);
+        draw_text("hello world", 4, 4, 24, white_color);
     }
     else if (timer <= 2)
     {
-        clear_background(255, 255, 255);
+        clear_background(white_color);
+        draw_text("hello world", 4, 4, 24, black_color);
     }
     else
     {

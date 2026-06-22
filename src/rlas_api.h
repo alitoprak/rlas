@@ -67,7 +67,10 @@ struct window_params
 void window_params_construct(window_params* mem);
 void window_params_destruct(window_params* mem);
 
-void rl_clear_background(uint8_t r, uint8_t g, uint8_t b);
+using color = Color;
+
+void rl_clear_background(const color& color);
+void rl_draw_text(const std::string& text, int pos_x, int pos_y, int font_size, const color& color);
 
 void register_api(asIScriptEngine* script_engine);
 
