@@ -3,9 +3,18 @@
 #include <scriptbuilder.h>
 #include <raylib.h>
 
-void clear_background(uint8_t r, uint8_t g, uint8_t b)
+namespace rlas
 {
-    ClearBackground({ r, g, b, 255 });
+    static void clear_background(uint8_t r, uint8_t g, uint8_t b)
+    {
+        ClearBackground({ r, g, b, 255 });
+    }
+};
+
+static int include_callback(const char* include, const char* from, CScriptBuilder* builder, void* user_param)
+{
+    builder->AddSectionFromFile(include);
+    return 0;
 }
 
 int main(int arg_count, char* args[])
@@ -14,9 +23,10 @@ int main(int arg_count, char* args[])
 
     RegisterStdString(engine);
 
-    engine->RegisterGlobalFunction("void clear_background(uint8, uint8, uint8)", asFUNCTION(clear_background), asCALL_CDECL);
+    engine->RegisterGlobalFunction("void clear_background(uint8, uint8, uint8)", asFUNCTION(rlas::clear_background), asCALL_CDECL);
 
     CScriptBuilder builder;
+    builder.SetIncludeCallback(include_callback, nullptr);
     builder.StartNewModule(engine, "rlas_module");
     builder.AddSectionFromFile("main.as");
     builder.BuildModule();
