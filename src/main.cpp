@@ -26,7 +26,7 @@ int main(int arg_count, char* args[])
         script_context->SetArgAddress(1, &window_params);
         script_context->Execute();
         
-        SetTraceLogLevel(rlas::app_log_level_to_real(app_params.log_level));
+        SetTraceLogLevel(app_params.log_level);
         SetTargetFPS(app_params.target_fps);
         InitWindow(window_params.width, window_params.height, window_params.title.c_str());
 

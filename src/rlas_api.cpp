@@ -39,14 +39,14 @@ void register_api(asIScriptEngine* script_engine)
     RegisterStdString(script_engine);
 
     script_engine->RegisterEnum("app_log_level");
-    script_engine->RegisterEnumValue("app_log_level", "all", static_cast<int>(app_log_level::all));
-    script_engine->RegisterEnumValue("app_log_level", "trace", static_cast<int>(app_log_level::trace));
-    script_engine->RegisterEnumValue("app_log_level", "debug", static_cast<int>(app_log_level::debug));
-    script_engine->RegisterEnumValue("app_log_level", "info", static_cast<int>(app_log_level::info));
-    script_engine->RegisterEnumValue("app_log_level", "warning", static_cast<int>(app_log_level::warning));
-    script_engine->RegisterEnumValue("app_log_level", "error", static_cast<int>(app_log_level::error));
-    script_engine->RegisterEnumValue("app_log_level", "fatal", static_cast<int>(app_log_level::fatal));
-    script_engine->RegisterEnumValue("app_log_level", "none", static_cast<int>(app_log_level::none));
+    script_engine->RegisterEnumValue("app_log_level", "all", LOG_ALL);
+    script_engine->RegisterEnumValue("app_log_level", "trace", LOG_TRACE);
+    script_engine->RegisterEnumValue("app_log_level", "debug", LOG_DEBUG);
+    script_engine->RegisterEnumValue("app_log_level", "info", LOG_INFO);
+    script_engine->RegisterEnumValue("app_log_level", "warning", LOG_WARNING);
+    script_engine->RegisterEnumValue("app_log_level", "error", LOG_ERROR);
+    script_engine->RegisterEnumValue("app_log_level", "fatal", LOG_FATAL);
+    script_engine->RegisterEnumValue("app_log_level", "none", LOG_NONE);
 
     script_engine->RegisterObjectType("app_params", sizeof(app_params), asOBJ_VALUE | asOBJ_POD);
     script_engine->RegisterObjectProperty("app_params", "app_log_level log_level", asOFFSET(app_params, log_level));
