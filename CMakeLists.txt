@@ -40,6 +40,8 @@ add_executable(rlas
     src/main.cpp
     src/rlas_api.h
     src/rlas_api.cpp
+    src/rlas_module.h
+    src/rlas_module.cpp
 )
 
 target_link_libraries(rlas PRIVATE raylib angelscript)
