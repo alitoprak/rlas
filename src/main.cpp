@@ -25,36 +25,8 @@ int main(int arg_count, char* args[])
         script_context->SetArgAddress(1, &window_params);
         script_context->Execute();
 
-        TraceLogLevel app_log_level;
-        switch (app_params.log_level)
-        {
-        case rlas::app_log_level::all:
-            app_log_level = LOG_ALL;
-            break;
-        case rlas::app_log_level::trace:
-            app_log_level = LOG_TRACE;
-            break;
-        case rlas::app_log_level::debug:
-            app_log_level = LOG_DEBUG;
-            break;
-        case rlas::app_log_level::info:
-            app_log_level = LOG_INFO;
-            break;
-        case rlas::app_log_level::warning:
-            app_log_level = LOG_WARNING;
-            break;
-        case rlas::app_log_level::error:
-            app_log_level = LOG_ERROR;
-            break;
-        case rlas::app_log_level::fatal:
-            app_log_level = LOG_FATAL;
-            break;
-        case rlas::app_log_level::none:
-        default:
-            app_log_level = LOG_NONE;
-            break;
-        }
-        SetTraceLogLevel(app_log_level);
+        
+        SetTraceLogLevel(rlas::app_log_level_to_real(app_params.log_level));
         SetTargetFPS(app_params.target_fps);
         InitWindow(window_params.width, window_params.height, window_params.title.c_str());
 
