@@ -3,10 +3,6 @@
 #include <scriptbuilder.h>
 #include <raylib.h>
 
-int g_window_width = 1280;
-int g_window_height = 720;
-std::string g_window_title = "rlas game";
-
 void clear_background(uint8_t r, uint8_t g, uint8_t b)
 {
     ClearBackground({ r, g, b, 255 });
@@ -18,10 +14,6 @@ int main(int arg_count, char* args[])
 
     RegisterStdString(engine);
 
-    engine->RegisterGlobalProperty("int g_window_width", &g_window_width);
-    engine->RegisterGlobalProperty("int g_window_height", &g_window_height);
-    engine->RegisterGlobalProperty("string g_window_title", &g_window_title);
-
     engine->RegisterGlobalFunction("void clear_background(uint8, uint8, uint8)", asFUNCTION(clear_background), asCALL_CDECL);
 
     CScriptBuilder builder;
@@ -30,19 +22,28 @@ int main(int arg_count, char* args[])
     builder.BuildModule();
 
     asIScriptModule* mod = engine->GetModule("rlas_module");
-    asIScriptFunction* setup_func = mod->GetFunctionByDecl("void setup()");
+    asIScriptFunction* setup_func = mod->GetFunctionByDecl("void setup(int &out, int &out, string &out, int &out)");
     asIScriptFunction* frame_func = mod->GetFunctionByDecl("void frame()");
     asIScriptFunction* cleanup_func = mod->GetFunctionByDecl("void cleanup()");
 
     if (setup_func && frame_func && cleanup_func)
     {
         asIScriptContext* ctx = engine->CreateContext();
-
+        
+        int window_width = 1280;
+        int window_height = 720;
+        std::string window_title = "rlas game";
+        int target_fps = 60;
+        
         ctx->Prepare(setup_func);
+        ctx->SetArgAddress(0, &window_width);
+        ctx->SetArgAddress(1, &window_height);
+        ctx->SetArgAddress(2, &window_title);
+        ctx->SetArgAddress(3, &target_fps);
         ctx->Execute();
 
-        InitWindow(g_window_width, g_window_height, g_window_title.c_str());
-
+        InitWindow(window_width, window_height, window_title.c_str());
+        SetTargetFPS(target_fps);
 
         while (!WindowShouldClose())
         {
