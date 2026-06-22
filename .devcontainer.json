@@ -1,0 +1,4 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/cpp:2.1.9-trixie",
+  "postCreateCommand": "bash scripts/install_dependencies.sh"
+}
