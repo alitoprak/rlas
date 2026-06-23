@@ -6,16 +6,16 @@
 namespace rlas
 {
 
-void window_params_construct(window_params* self)
+static void window_params_construct(window_params* self)
 {
     new(self) window_params();
 }
-
-void window_params_destruct(window_params* self)
+static void window_params_destruct(window_params* self)
 {
     self->~window_params();
 }
 
+using color = Color;
 static void color_construct(uint8_t r, uint8_t g, uint8_t b, uint8_t a, color* self)
 {
     self->r = r;
@@ -24,18 +24,31 @@ static void color_construct(uint8_t r, uint8_t g, uint8_t b, uint8_t a, color* s
     self->a = a;
 }
 
-void rl_clear_background(const color& color)
+static void rl_clear_background(const color& color)
 {
     ClearBackground(color);
 }
 
-void rl_draw_text(const std::string& text, int pos_x, int pos_y, int font_size, const color& color)
+static void rl_draw_text(const std::string& text, int pos_x, int pos_y, int font_size, const color& color)
 {
     DrawText(text.c_str(), pos_x, pos_y, font_size, color);
 }
 
+/*
+static void message_callback(const asSMessageInfo *msg, void *param)
+{
+  const char *type = "ERR ";
+  if( msg->type == asMSGTYPE_WARNING ) 
+    type = "WARN";
+  else if( msg->type == asMSGTYPE_INFORMATION ) 
+    type = "INFO";
+  printf("%s (%d, %d) : %s : %s\n", msg->section, msg->row, msg->col, type, msg->message);
+}
+*/
+
 void register_api(asIScriptEngine* script_engine)
 {
+    // script_engine->SetMessageCallback(asFUNCTION(message_callback), 0, asCALL_CDECL);
     RegisterStdString(script_engine);
 
     script_engine->RegisterEnum("app_log_level");
@@ -64,6 +77,7 @@ void register_api(asIScriptEngine* script_engine)
 
     script_engine->RegisterGlobalFunction("void clear_background(const color &in)", asFUNCTION(rl_clear_background), asCALL_CDECL);
     script_engine->RegisterGlobalFunction("void draw_text(const string &in, int, int, int, const color &in)", asFUNCTION(rl_draw_text), asCALL_CDECL);
+    
 }
 
 };
